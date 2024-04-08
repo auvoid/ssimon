@@ -45,7 +45,7 @@ export class IdentityManager<T extends IdentityAccount>
     return method;
   }
 
-  private getMethodAdaper(did: string) {
+  private getMethodAdapter(did: string) {
     const method = this._extractDidMethodIdentifier(did);
     if (!Object.keys(this.networkAdapters).includes(method))
       throw new Error("DID Method not supported");
@@ -71,7 +71,7 @@ export class IdentityManager<T extends IdentityAccount>
       alias: props.alias,
     });
     if (!config) throw new Error("Unable to find DID");
-    const adapter = this.getMethodAdaper(config.did);
+    const adapter = this.getMethodAdapter(config.did);
     const { identity } = await adapter.deserializeDid(config, props.store);
     return identity;
   }
