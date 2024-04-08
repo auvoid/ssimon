@@ -19,9 +19,7 @@ export type CreateDidProps<T extends StorageSpec<Record<string, any>, any>> = {
 };
 
 export declare class NetworkAdapter {
-  public static build<T extends IdentityAccount>(
-    options: NetworkAdapterOptions
-  ): Promise<NetworkAdapter>;
+  public static build(options: NetworkAdapterOptions): Promise<NetworkAdapter>;
 
   public getMethodIdentifier(): string;
 

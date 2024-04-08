@@ -96,7 +96,10 @@ export class IdentityManager<T extends IdentityAccount>
     const adapter = this.networkAdapters[props.method];
     const { identity, seed } = await adapter.createDid(props);
 
-    await this.storage.findOneAndUpdate({ alias: props.alias }, { seed });
+    await this.storage.findOneAndUpdate(
+      { alias: props.alias },
+      { seed, did: identity.getDid() }
+    );
 
     return identity;
   }
