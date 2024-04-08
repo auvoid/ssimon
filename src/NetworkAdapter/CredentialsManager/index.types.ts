@@ -80,21 +80,4 @@ export declare class CredentialsManager<
    */
 
   public createBadge(options: CreateBadgeProps): Promise<Record<string, any>>;
-
-  /**
-   * Revoke a credential by index
-   *
-   * @param {number} keyIndex
-   * @returns {Promise<void>}
-   */
-
-  public revokeByIndex(keyIndex: number): Promise<void>;
-
-  /**
-   *  Revoke a credential
-   *
-   * @param credential
-   * @returns {Promise<void>}
-   */
-  public revokeCredential(credential: Record<string, any>): Promise<void>;
 }
