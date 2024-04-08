@@ -11,12 +11,12 @@ export type IdentityConfig = {
 };
 
 export type IdentityManagerOptions<T extends StorageSpec<any, any>> = {
-  adapter: typeof NetworkAdapter;
+  adapters: (typeof NetworkAdapter)[];
   storage: T;
 };
 
 export declare class IdentityManagerSpec<T extends IdentityAccount> {
-  networkAdapter: NetworkAdapter;
+  networkAdapters: Record<string, NetworkAdapter>;
 
   public static build<T extends IdentityAccount>(): Promise<
     IdentityManagerSpec<T>

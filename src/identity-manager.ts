@@ -10,7 +10,7 @@ import { StorageSpec } from "./Storage/index.types";
 export class IdentityManager<T extends IdentityAccount>
   implements IdentityManagerSpec<T>
 {
-  networkAdapter: NetworkAdapter;
+  networkAdapters: Record<string, NetworkAdapter>;
   storage: StorageSpec<IdentityConfig, IdentityConfig>;
 
   /**
@@ -24,11 +24,32 @@ export class IdentityManager<T extends IdentityAccount>
   public static async build(
     options: IdentityManagerOptions<StorageSpec<any, any>>
   ) {
-    const { adapter, storage } = options;
+    const { adapters, storage } = options;
     const manager = new IdentityManager();
     manager.storage = storage;
-    manager.networkAdapter = await adapter.build({ driver: manager.storage });
+    const initializedAdapters = await Promise.all(
+      adapters.map(async (a) => await a.build({ driver: manager.storage }))
+    );
+    const networkAdapters: Record<string, NetworkAdapter> = {};
+    initializedAdapters.forEach(
+      (a) => (networkAdapters[a.getMethodIdentifier()] = a)
+    );
+    manager.networkAdapters = networkAdapters;
     return manager;
+  }
+
+  private _extractDidMethodIdentifier(did: string) {
+    const fragments = did.split(":");
+    if (fragments.length < 2) throw new Error("Malformed DID");
+    const [_, method] = fragments;
+    return method;
+  }
+
+  private getMethodAdapter(did: string) {
+    const method = this._extractDidMethodIdentifier(did);
+    if (!Object.keys(this.networkAdapters).includes(method))
+      throw new Error("DID Method not supported");
+    return this.networkAdapters[method];
   }
 
   /**
@@ -50,10 +71,8 @@ export class IdentityManager<T extends IdentityAccount>
       alias: props.alias,
     });
     if (!config) throw new Error("Unable to find DID");
-    const { identity } = await this.networkAdapter.deserializeDid(
-      config,
-      props.store
-    );
+    const adapter = this.getMethodAdapter(config.did);
+    const { identity } = await adapter.deserializeDid(config, props.store);
     return identity;
   }
 
@@ -72,9 +91,15 @@ export class IdentityManager<T extends IdentityAccount>
     if (await this.storage.findOne({ alias: props.alias }))
       throw new Error("Alias already exists");
     await this.storage.create({ alias: props.alias });
-    const { identity, seed } = await this.networkAdapter.createDid(props);
+    if (!Object.keys(this.networkAdapters).includes(props.method))
+      throw new Error("DID Method not supported");
+    const adapter = this.networkAdapters[props.method];
+    const { identity, seed } = await adapter.createDid(props);
 
-    await this.storage.findOneAndUpdate({ alias: props.alias }, { seed });
+    await this.storage.findOneAndUpdate(
+      { alias: props.alias },
+      { seed, did: identity.getDid() }
+    );
 
     return identity;
   }

@@ -16,7 +16,6 @@ When initialising SSIMON you can plug any of these adapters into the builder and
 
 ## Guides
 
-1. [Getting Started]("examples/1.md")
-2. [Managing Identity Accounts]("examples/2.md")
-3. [Managing Credentials]("examples/3.md")
-
+1. [Getting Started](examples/1.md)
+2. [Managing Identity Accounts](examples/2.md)
+3. [Managing Credentials](examples/3.md)
