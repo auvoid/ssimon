@@ -88,13 +88,26 @@ export class IdentityManager<T extends IdentityAccount>
   public async createDid<T extends StorageSpec<Record<string, any>, any>>(
     props: CreateDidProps<T>
   ): Promise<IdentityAccount> {
-    if (await this.storage.findOne({ alias: props.alias }))
-      throw new Error("Alias already exists");
+    const aliasExists = await this.storage.findOne({ alias: props.alias });
+    if (aliasExists) {
+      const isTemp = aliasExists.did.split(":")[2].startsWith("TEMP");
+      if (!isTemp) throw new Error("Alias already exists");
+    }
     await this.storage.create({ alias: props.alias });
     if (!Object.keys(this.networkAdapters).includes(props.method))
       throw new Error("DID Method not supported");
     const adapter = this.networkAdapters[props.method];
-    const { identity, seed } = await adapter.createDid(props);
+    const { identity, seed } = await adapter
+      .createDid(props)
+      .catch(async (e) => {
+        if (e.name === "InsufficientFundsError") {
+          await this.storage.findOneAndUpdate(
+            { alias: props.alias },
+            { seed: e.seed, did: e.did }
+          );
+        }
+        throw e;
+      });
 
     await this.storage.findOneAndUpdate(
       { alias: props.alias },
