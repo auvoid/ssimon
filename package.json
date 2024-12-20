@@ -1,6 +1,6 @@
 {
   "name": "@tanglelabs/ssimon",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "SSIMON is an open, interoperable, and convenient software to manage DIDs and credentials",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,8 @@
   "author": "Merul <merul@tanglelabs.io>",
   "license": "GPL-2.0",
   "dependencies": {
-    "crypto-js": "^4.1.1"
+    "crypto-js": "^4.1.1",
+    "did-jwt": "^8.0.4"
   },
   "scripts": {
     "build": "tsc",

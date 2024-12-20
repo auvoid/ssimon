@@ -1,5 +1,6 @@
 import { StorageSpec } from "../../Storage/index.types";
 import { CredentialsManager } from "../CredentialsManager/index.types";
+import * as didJWT from "did-jwt";
 
 export type IdentityAccountProps<
   T extends StorageSpec<Record<string, any>, any>
@@ -46,10 +47,7 @@ export declare class IdentityAccount {
   /**
    * Create a verifiable presentation from the credentials passed
    *
-   * @param {string[]} credentials
-   * @returns {Promise<Record<string, any>>}
+   * @returns {Promise<didJWT.Signer>}
    */
-  public createPresentation(
-    credentials: string[]
-  ): Promise<Record<string, any>>;
+  public getSigner(): Promise<didJWT.Signer>;
 }
