@@ -9,7 +9,10 @@
   "license": "GPL-2.0",
   "dependencies": {
     "crypto-js": "^4.1.1",
-    "did-jwt": "^8.0.4"
+    "did-jwt": "^8.0.4",
+    "did-jwt-vc": "^4.0.4",
+    "did-resolver": "^4.1.0",
+    "jsonschema": "^1.4.1"
   },
   "scripts": {
     "build": "tsc",

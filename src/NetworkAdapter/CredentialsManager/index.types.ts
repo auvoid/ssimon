@@ -1,9 +1,13 @@
 import { StorageSpec } from "../../Storage/index.types";
-
-export interface IVerificationResult {
-  vc: boolean;
-  dvid: boolean;
-}
+import { Resolver } from "did-resolver";
+import {
+  createVerifiableCredentialJwt,
+  JwtCredentialPayload,
+  verifyCredential,
+} from "did-jwt-vc";
+import { DidSigner } from "../index.types";
+import { Validator } from "jsonschema";
+import { OpenBadgeSchema } from "./ob-schema";
 
 export type CreateCredentialProps = {
   id: string;
@@ -26,31 +30,32 @@ export type CreateBadgeProps = CreateCredentialProps & {
 /**
  * Credentials Manager, accessible at <account>.credentials
  */
-export declare class CredentialsManager<
-  T extends StorageSpec<Record<string, any>, any>
-> {
-  store: T;
+export class CredentialsManager {
+  store: StorageSpec<any, any>;
+  signer: DidSigner;
+  resolver: Resolver;
+
+  private constructor() {}
 
   /**
    * INTERNAL ONLY
    *
    * construct a new CredentialsManager
    *
-   * @param {...any[]} props
+   * @param {Record<string, string>} store
+   * @param {DidSigner} signer
    */
-  public static build<T extends StorageSpec<any, any>>(
-    ...props: any[]
-  ): Promise<CredentialsManager<T>>;
-
-  /**
-   * check wether a credential is cryptographically valid or not
-   *
-   * @param {Record<string, unknown>} credential
-   * @returns Promise<boolean>
-   */
-  public isCredentialValid(
-    credential: Record<string, unknown>
-  ): Promise<boolean>;
+  public static build(
+    store: StorageSpec<any, any>,
+    signer: DidSigner,
+    resolver: Resolver
+  ): CredentialsManager {
+    const credManager = new CredentialsManager();
+    credManager.store = store;
+    credManager.signer = signer;
+    credManager.resolver = resolver;
+    return credManager;
+  }
 
   /**
    * Verify the credential and the proof or origin for a domain
@@ -59,9 +64,14 @@ export declare class CredentialsManager<
    * @returns Promise<IVerificationResult>
    */
 
-  public verify(
-    credential: Record<string, unknown>
-  ): Promise<IVerificationResult>;
+  public async verify(credential: Record<string, unknown>): Promise<boolean> {
+    const { cred } = credential;
+    const result = await verifyCredential(cred as string, this.resolver).catch(
+      () => false
+    );
+    if (result === false) return false;
+    return true;
+  }
 
   /**
    * Create and issue a new credential
@@ -70,7 +80,38 @@ export declare class CredentialsManager<
    * @returns {Promise<Record<string, any>>}
    */
 
-  public create(options: CreateCredentialProps): Promise<Record<string, any>>;
+  public async create(
+    options: CreateCredentialProps
+  ): Promise<Record<string, any>> {
+    const { id, recipientDid, body, type } = options;
+
+    const vcIssuer = {
+      did: this.signer.did,
+      signer: this.signer.signer,
+      alg: this.signer.alg,
+      kid: this.signer.kid,
+    };
+    const types = Array.isArray(type) ? [...type] : [type];
+
+    const credential: JwtCredentialPayload = {
+      sub: recipientDid,
+      nbf: Math.floor(Date.now() / 1000),
+      id,
+      vc: {
+        "@context": ["https://www.w3.org/2018/credentials/v1"],
+        type: ["VerifiableCredential", ...types],
+        id,
+        credentialSubject: {
+          ...body,
+        },
+      },
+    };
+    if (options.expiryDate) credential.exp = options.expiryDate;
+
+    const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
+
+    return { cred: jwt };
+  }
 
   /**
    * Create and issue a new badge
@@ -79,5 +120,72 @@ export declare class CredentialsManager<
    * @returns {Promise<Record<string, any>>}
    */
 
-  public createBadge(options: CreateBadgeProps): Promise<Record<string, any>>;
+  public async createBadge(
+    options: CreateBadgeProps
+  ): Promise<Record<string, any>> {
+    const {
+      id,
+      recipientDid,
+      body,
+      type,
+      image,
+      issuerName,
+      criteria,
+      description,
+    } = options;
+
+    const vcIssuer = {
+      did: this.signer.did,
+      signer: this.signer.signer,
+      alg: this.signer.alg,
+      kid: this.signer.kid,
+    };
+    const types = Array.isArray(type) ? [...type] : [type];
+    const credential: JwtCredentialPayload = {
+      sub: recipientDid,
+      nbf: Math.floor(Date.now() / 1000),
+      id,
+      vc: {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://purl.imsglobal.org/spec/ob/v3p0/schema/json/ob_v3p0_achievementcredential_schema.json",
+        ],
+        type: ["VerifiableCredential", "OpenBadgeCredential"],
+        id,
+        name: type,
+        issuer: {
+          id: this.signer.did,
+          type: ["Profile"],
+          name: issuerName,
+        },
+        issuanceDate: new Date(Date.now()).toISOString(),
+        credentialSubject: {
+          type: ["AchievementSubject"],
+          achievement: {
+            id: id,
+            type: "",
+            criteria: {
+              narrative: criteria,
+            },
+            name: type,
+            description: description,
+            image: {
+              id: image,
+              type: "Image",
+            },
+            ...body,
+          },
+        },
+      },
+    };
+
+    if (options.expiryDate) credential.exp = options.expiryDate;
+
+    const validator = new Validator();
+    const result = validator.validate(credential.vc, OpenBadgeSchema);
+    if (result.errors.length > 0) throw new Error("Schema Validation Failed");
+    const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
+
+    return { cred: jwt };
+  }
 }

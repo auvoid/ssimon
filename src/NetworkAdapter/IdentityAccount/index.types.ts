@@ -13,7 +13,7 @@ export type IdentityAccountProps<
 };
 
 export declare class IdentityAccount {
-  credentials: CredentialsManager<StorageSpec<Record<string, any>, any>>;
+  credentials: CredentialsManager;
 
   /**
    * INTERNAL ONLY, USED ONLY BY ADAPTER CODE

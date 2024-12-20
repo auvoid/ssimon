@@ -1,6 +1,7 @@
 import { IdentityConfig } from "../identity-manager.types";
 import { IdentityAccount } from "./IdentityAccount/index.types";
 import { StorageSpec } from "../Storage/index.types";
+import * as didJWT from "did-jwt";
 
 export type DidCreationResult = {
   identity: IdentityAccount;
@@ -32,3 +33,10 @@ export declare class NetworkAdapter {
     store: T
   ): Promise<DidCreationResult>;
 }
+
+export type DidSigner = {
+  did: `did:${string}`;
+  kid: `did:${string}`;
+  alg: string;
+  signer: didJWT.Signer;
+};
