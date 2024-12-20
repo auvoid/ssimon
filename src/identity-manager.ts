@@ -24,11 +24,13 @@ export class IdentityManager<T extends IdentityAccount>
   public static async build(
     options: IdentityManagerOptions<StorageSpec<any, any>>
   ) {
-    const { adapters, storage } = options;
+    const { adapters, storage, resolver } = options;
     const manager = new IdentityManager();
     manager.storage = storage;
     const initializedAdapters = await Promise.all(
-      adapters.map(async (a) => await a.build({ driver: manager.storage }))
+      adapters.map(
+        async (a) => await a.build({ driver: manager.storage, resolver })
+      )
     );
     const networkAdapters: Record<string, NetworkAdapter> = {};
     initializedAdapters.forEach(

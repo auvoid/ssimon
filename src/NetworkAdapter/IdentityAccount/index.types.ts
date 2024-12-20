@@ -1,6 +1,11 @@
 import { StorageSpec } from "../../Storage/index.types";
 import { CredentialsManager } from "../CredentialsManager/index.types";
 import * as didJWT from "did-jwt";
+import { DidSigner } from "../index.types";
+import {
+  createVerifiablePresentationJwt,
+  JwtPresentationPayload,
+} from "did-jwt-vc";
 
 export type IdentityAccountProps<
   T extends StorageSpec<Record<string, any>, any>
@@ -12,21 +17,20 @@ export type IdentityAccountProps<
   extras?: any;
 };
 
-export declare class IdentityAccount {
+export class IdentityAccount {
   credentials: CredentialsManager;
+  signer: DidSigner;
+  document: Record<string, any>;
 
-  /**
-   * INTERNAL ONLY, USED ONLY BY ADAPTER CODE
-   *
-   * Create a new IdentityAccount, this is used internally by adapters only
-   *
-   * @param {IdentityAccountProps} props
-   * @returns Promise<IdentityAccount>
-   */
-
-  public static build(
-    props: IdentityAccountProps<StorageSpec<Record<string, any>, any>>
-  ): Promise<IdentityAccount>;
+  constructor(
+    credentialsManager: CredentialsManager,
+    signer: DidSigner,
+    document: Record<string, any>
+  ) {
+    this.credentials = credentialsManager;
+    this.signer = signer;
+    this.document = document;
+  }
 
   /**
    * Get a did identifier (did:foobar:fj438r84jt859t959t)
@@ -34,7 +38,9 @@ export declare class IdentityAccount {
    * @returns {string}
    */
 
-  public getDid(): string;
+  public getDid(): string {
+    return this.document.id;
+  }
 
   /**
    * Get the full DID Document
@@ -42,12 +48,39 @@ export declare class IdentityAccount {
    * @returns {Record<string, any>}
    */
 
-  public getDocument(): Record<string, any>;
+  public getDocument(): Record<string, any> {
+    return this.document;
+  }
 
   /**
-   * Create a verifiable presentation from the credentials passed
+   * Create a verifiable presentation
    *
-   * @returns {Promise<didJWT.Signer>}
+   * @param {string[]} credentials
+   * @returns {Promise<{ vpPayload: Record<string, any>; presentationJwt: string }>}
    */
-  public getSigner(): Promise<didJWT.Signer>;
+  async createPresentation(
+    credentials: string[]
+  ): Promise<{ vpPayload: Record<string, any>; presentationJwt: string }> {
+    const vpIssuer = {
+      did: this.signer.did,
+      signer: this.signer.signer,
+      alg: this.signer.alg,
+      kid: this.signer.kid,
+    };
+
+    const vpPayload: JwtPresentationPayload = {
+      vp: {
+        "@context": ["https://www.w3.org/2018/credentials/v1"],
+        type: ["VerifiablePresentation"],
+        verifiableCredential: credentials,
+      },
+    };
+
+    const presentationJwt = await createVerifiablePresentationJwt(
+      vpPayload,
+      vpIssuer
+    );
+
+    return { vpPayload, presentationJwt };
+  }
 }

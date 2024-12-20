@@ -2,6 +2,7 @@ import { IdentityConfig } from "../identity-manager.types";
 import { IdentityAccount } from "./IdentityAccount/index.types";
 import { StorageSpec } from "../Storage/index.types";
 import * as didJWT from "did-jwt";
+import { Resolver } from "did-resolver";
 
 export type DidCreationResult = {
   identity: IdentityAccount;
@@ -10,6 +11,7 @@ export type DidCreationResult = {
 
 export type NetworkAdapterOptions = {
   driver: StorageSpec<any, any>;
+  resolver: Resolver;
 };
 
 export type CreateDidProps<T extends StorageSpec<Record<string, any>, any>> = {
@@ -32,6 +34,8 @@ export declare class NetworkAdapter {
     conf: IdentityConfig,
     store: T
   ): Promise<DidCreationResult>;
+
+  public getSigner(seed: string): Promise<DidSigner>;
 }
 
 export type DidSigner = {
