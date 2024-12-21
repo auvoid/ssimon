@@ -9,7 +9,7 @@ import {
 import { Resolver } from "did-resolver";
 
 export type IdentityAccountProps<
-  T extends StorageSpec<Record<string, any>, any>
+  T extends StorageSpec<Record<string, any>, any>,
 > = {
   seed: string;
   isOld: boolean;

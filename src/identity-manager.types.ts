@@ -21,7 +21,7 @@ export declare class IdentityManagerSpec {
   networkAdapters: Record<string, NetworkAdapter>;
 
   public static build<
-    T extends IdentityAccount
+    T extends IdentityAccount,
   >(): Promise<IdentityManagerSpec>;
 
   public getDid(props: {
