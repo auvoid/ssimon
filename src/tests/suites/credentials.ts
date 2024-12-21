@@ -1,9 +1,13 @@
+import { Resolver } from "did-resolver";
 import { IdentityAccount } from "../../NetworkAdapter/IdentityAccount";
 import { ManagerProps } from "../test";
 import { generateRandomString } from "../test-utils/random";
+import * as didJWT from "did-jwt";
+import { getDidJwkResolver } from "@sphereon/did-resolver-jwk";
 
 let did: IdentityAccount;
 let vcJwt: string;
+let sdJwt: string;
 let badgeJwt: string;
 
 export function CredentialsSuite(getProps: () => ManagerProps) {
@@ -55,7 +59,15 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
           ginjo: "dingg",
         },
       });
+      sdJwt = sd;
       expect(sd).toBeDefined();
+    });
+
+    test("Verify SD-JWT", async () => {
+      const result = await didJWT.verifyJWT(sdJwt.split("~")[0], {
+        resolver: new Resolver({ ...getDidJwkResolver() }),
+      });
+      expect(result.verified).toEqual(true);
     });
 
     test("Verify Credential", async () => {

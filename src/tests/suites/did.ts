@@ -1,9 +1,6 @@
-import { IdentityManager } from "../../identity-manager";
-import { IdentityAccount } from "../../NetworkAdapter/IdentityAccount";
 import { ManagerProps } from "../test";
 import { generateRandomString } from "../test-utils/random";
 
-let didAccount: IdentityAccount;
 let alias: string;
 
 const vcs: string[] = [
@@ -19,7 +16,6 @@ export function DIDSuite(getProps: () => ManagerProps) {
         method: "jwk",
         store: idStore,
       });
-      didAccount = did;
       expect(did.getDid()).toBeDefined();
     });
 

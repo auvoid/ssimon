@@ -87,7 +87,9 @@ export class CredentialsManager {
 
   public async verify(credential: string): Promise<boolean> {
     const result = await verifyCredential(credential, this.resolver).catch(
-      () => false
+      (e) => {
+        return false;
+      }
     );
     if (result === false) return false;
     return true;
@@ -96,10 +98,10 @@ export class CredentialsManager {
   /**
    * Create and issue a new credential
    *
-   * @param {CreateCredentialProps} options
+   * @param {CreateSdJwtProps} options
    * @returns {Promise<string>}
    */
-  async createSdJwt(props: CreateSdJwtProps) {
+  async createSdJwt(props: CreateSdJwtProps): Promise<string> {
     const { body, disclosureFrame, type, recipientDid } = props;
     const frame = {
       _sd: disclosureFrame,
@@ -108,7 +110,7 @@ export class CredentialsManager {
       {
         iss: this.signer.did,
         sub: recipientDid,
-        iat: new Date().getTime(),
+        iat: Math.floor(Date.now() / 1000),
         vct: type,
         ...body,
       },
@@ -117,6 +119,7 @@ export class CredentialsManager {
       frame
     );
     console.log(credential);
+    return credential;
   }
 
   /**
