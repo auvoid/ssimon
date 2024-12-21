@@ -5,18 +5,28 @@ import {
   JwtCredentialPayload,
   verifyCredential,
 } from "did-jwt-vc";
+import type { DisclosureFrame } from "@sd-jwt/types";
+
 import { DidSigner } from "../index.types";
 import { Validator } from "jsonschema";
 import { OpenBadgeSchema } from "./ob-schema";
+import { SDJwtVcInstance } from "@sd-jwt/sd-jwt-vc";
+import { digest, generateSalt } from "@sd-jwt/crypto-nodejs";
 
 export type CreateCredentialProps = {
   id: string;
   recipientDid: string;
   body: Record<string, unknown>;
   type: string | string[];
-  keyIndex: number;
   expiryDate?: number;
   extras?: Record<string, unknown>;
+};
+
+export type CreateSdJwtProps = {
+  body: Record<string, any>;
+  disclosureFrame: string[];
+  recipientDid: string;
+  type: string;
 };
 
 export type CreateBadgeProps = CreateCredentialProps & {
@@ -34,6 +44,7 @@ export class CredentialsManager {
   store: StorageSpec<any, any>;
   signer: DidSigner;
   resolver: Resolver;
+  sdJwt: SDJwtVcInstance;
 
   private constructor() {}
 
@@ -54,6 +65,16 @@ export class CredentialsManager {
     credManager.store = store;
     credManager.signer = signer;
     credManager.resolver = resolver;
+    credManager.sdJwt = new SDJwtVcInstance({
+      signer: async (data: string) => {
+        const sign = (await signer.signer(data)) as string;
+        return sign;
+      },
+      signAlg: signer.alg,
+      hasher: digest,
+      hashAlg: "SHA-256",
+      saltGenerator: generateSalt,
+    });
     return credManager;
   }
 
@@ -66,10 +87,39 @@ export class CredentialsManager {
 
   public async verify(credential: string): Promise<boolean> {
     const result = await verifyCredential(credential, this.resolver).catch(
-      () => false
+      (e) => {
+        return false;
+      }
     );
     if (result === false) return false;
     return true;
+  }
+
+  /**
+   * Create and issue a new credential
+   *
+   * @param {CreateSdJwtProps} options
+   * @returns {Promise<string>}
+   */
+  async createSdJwt(props: CreateSdJwtProps): Promise<string> {
+    const { body, disclosureFrame, type, recipientDid } = props;
+    const frame = {
+      _sd: disclosureFrame,
+    };
+    const credential = await this.sdJwt.issue(
+      {
+        iss: this.signer.did,
+        sub: recipientDid,
+        iat: Math.floor(Date.now() / 1000),
+        vct: type,
+        ...body,
+      },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      frame
+    );
+    console.log(credential);
+    return credential;
   }
 
   /**
@@ -177,7 +227,6 @@ export class CredentialsManager {
 
     const validator = new Validator();
     const result = validator.validate(credential.vc, OpenBadgeSchema);
-    console.log(result);
     if (result.errors.length > 0) throw new Error("Schema Validation Failed");
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
 
