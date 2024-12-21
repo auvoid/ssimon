@@ -47,12 +47,15 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
 
     test("Create SD-JWT", async () => {
       const sd = await did.credentials.createSdJwt({
+        type: "Doge",
+        recipientDid: "did:web:did.auvo.io",
         disclosureFrame: ["ginjo"],
         body: {
           panja: "ding",
           ginjo: "dingg",
         },
       });
+      expect(sd).toBeDefined();
     });
 
     test("Verify Credential", async () => {
