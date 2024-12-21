@@ -45,6 +45,16 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
       expect(badge).toBeDefined();
     });
 
+    test("Create SD-JWT", async () => {
+      const sd = await did.credentials.createSdJwt({
+        disclosureFrame: ["ginjo"],
+        body: {
+          panja: "ding",
+          ginjo: "dingg",
+        },
+      });
+    });
+
     test("Verify Credential", async () => {
       const result = await did.credentials.verify(vcJwt);
       expect(result).toEqual(true);

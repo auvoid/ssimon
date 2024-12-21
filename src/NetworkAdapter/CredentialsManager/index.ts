@@ -5,6 +5,8 @@ import {
   JwtCredentialPayload,
   verifyCredential,
 } from "did-jwt-vc";
+import type { DisclosureFrame } from "@sd-jwt/types";
+
 import { DidSigner } from "../index.types";
 import { Validator } from "jsonschema";
 import { OpenBadgeSchema } from "./ob-schema";
@@ -18,6 +20,13 @@ export type CreateCredentialProps = {
   type: string | string[];
   expiryDate?: number;
   extras?: Record<string, unknown>;
+};
+
+export type CreateSdJwtProps = {
+  body: Record<string, any>;
+  disclosureFrame: string[];
+  recipientDid: string;
+  type: string;
 };
 
 export type CreateBadgeProps = CreateCredentialProps & {
@@ -90,6 +99,32 @@ export class CredentialsManager {
    * @param {CreateCredentialProps} options
    * @returns {Promise<string>}
    */
+  async createSdJwt(props: CreateSdJwtProps) {
+    const { body, disclosureFrame, type, recipientDid } = props;
+    const frame = {
+      _sd: disclosureFrame,
+    };
+    const credential = await this.sdJwt.issue(
+      {
+        iss: this.signer.did,
+        sub: recipientDid,
+        iat: new Date().getTime(),
+        vct: type,
+        ...body,
+      },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      frame
+    );
+    console.log(credential);
+  }
+
+  /**
+   * Create and issue a new credential
+   *
+   * @param {CreateCredentialProps} options
+   * @returns {Promise<string>}
+   */
 
   public async create(options: CreateCredentialProps): Promise<string> {
     const { id, recipientDid, body, type } = options;
@@ -118,7 +153,6 @@ export class CredentialsManager {
     if (options.expiryDate) credential.exp = options.expiryDate;
 
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
-    console.log(jwt);
 
     return jwt;
   }
