@@ -85,9 +85,7 @@ export class IdentityManager implements IdentityManagerSpec {
    * @returns Promise<IdentityAccount>
    */
 
-  public async createDid<T extends StorageSpec<Record<string, any>, any>>(
-    props: CreateDidProps<T>
-  ): Promise<IdentityAccount> {
+  public async createDid(props: CreateDidProps): Promise<IdentityAccount> {
     const aliasExists = await this.storage.findOne({ alias: props.alias });
     if (aliasExists) {
       const isTemp = aliasExists.did.split(":")[2].startsWith("TEMP");
