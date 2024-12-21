@@ -1,5 +1,5 @@
 import { IdentityManager, StorageSpec } from "../index";
-import { DidJwkAdapter } from "../../../jwk-identity-adapter/src";
+import { DidJwkAdapter } from "@tanglelabs/jwk-identity-adapter";
 import { getDidJwkResolver } from "@sphereon/did-resolver-jwk";
 import { Resolver } from "did-resolver";
 import {
