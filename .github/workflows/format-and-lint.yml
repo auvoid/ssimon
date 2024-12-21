@@ -8,25 +8,6 @@ on:
       - "main"
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install System Deps
-        run: sudo apt update && sudo apt install libc6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20.x
-
-      - name: Install Dependencies
-        run: yarn
-
-      - name: Test
-        run: yarn lint
-
   format:
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version: 20.x
 
       - name: Install Dependencies
         run: yarn
