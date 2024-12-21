@@ -1,11 +1,12 @@
 import { StorageSpec } from "../../Storage/index.types";
-import { CredentialsManager } from "../CredentialsManager/index.types";
+import { CredentialsManager } from "../CredentialsManager";
 import * as didJWT from "did-jwt";
 import { DidSigner } from "../index.types";
 import {
   createVerifiablePresentationJwt,
   JwtPresentationPayload,
 } from "did-jwt-vc";
+import { Resolver } from "did-resolver";
 
 export type IdentityAccountProps<
   T extends StorageSpec<Record<string, any>, any>
@@ -21,16 +22,6 @@ export class IdentityAccount {
   credentials: CredentialsManager;
   signer: DidSigner;
   document: Record<string, any>;
-
-  constructor(
-    credentialsManager: CredentialsManager,
-    signer: DidSigner,
-    document: Record<string, any>
-  ) {
-    this.credentials = credentialsManager;
-    this.signer = signer;
-    this.document = document;
-  }
 
   /**
    * Get a did identifier (did:foobar:fj438r84jt859t959t)

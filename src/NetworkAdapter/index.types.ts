@@ -1,5 +1,5 @@
 import { IdentityConfig } from "../identity-manager.types";
-import { IdentityAccount } from "./IdentityAccount/index.types";
+import { IdentityAccount } from "./IdentityAccount";
 import { StorageSpec } from "../Storage/index.types";
 import * as didJWT from "did-jwt";
 import { Resolver } from "did-resolver";
@@ -34,8 +34,6 @@ export declare class NetworkAdapter {
     conf: IdentityConfig,
     store: T
   ): Promise<DidCreationResult>;
-
-  public getSigner(seed: string): Promise<DidSigner>;
 }
 
 export type DidSigner = {

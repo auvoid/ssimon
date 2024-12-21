@@ -7,7 +7,10 @@
   "repository": "https://github.com/Tangle-Labs/identity-manager",
   "author": "Merul <merul@tanglelabs.io>",
   "license": "GPL-2.0",
+  "type": "module",
   "dependencies": {
+    "@sphereon/did-resolver-jwk": "0.10.2-unstable.5",
+    "@tanglelabs/typeorm-storage-driver": "^0.1.3",
     "crypto-js": "^4.1.1",
     "did-jwt": "^8.0.4",
     "did-jwt-vc": "^4.0.4",
@@ -22,7 +25,8 @@
     "format": "prettier -w \"**/*.{ts,js,json,scss,css}\"",
     "format-check": "prettier -c \"src/**{ts,js,json,scss,css}\"",
     "semantic-release": "semantic-release --branches main",
-    "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" dist"
+    "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
+    "dev": "nodemon --watch './**/*.ts' --exec 'node --experimental-specifier-resolution=node --trace-warnings --loader ts-node/esm' src/tests/test.ts"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
@@ -37,6 +41,7 @@
     "prettier": "^2.7.1",
     "semantic-release": "^19.0.3",
     "ts-jest": "^28.0.5",
+    "ts-node": "^10.9.2",
     "tslint": "^6.1.3",
     "typescript": "^4.7.4"
   }

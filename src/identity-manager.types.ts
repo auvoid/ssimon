@@ -1,5 +1,5 @@
 import { Resolver } from "did-resolver";
-import { IdentityAccount } from "./NetworkAdapter/IdentityAccount/index.types";
+import { IdentityAccount } from "./NetworkAdapter/IdentityAccount";
 import { NetworkAdapter } from "./NetworkAdapter/index.types";
 import { StorageSpec } from "./Storage/index.types";
 
