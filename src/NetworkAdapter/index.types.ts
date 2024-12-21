@@ -14,11 +14,11 @@ export type NetworkAdapterOptions = {
   resolver: Resolver;
 };
 
-export type CreateDidProps<T extends StorageSpec<Record<string, any>, any>> = {
+export type CreateDidProps = {
   seed?: string;
   alias: string;
   method: string;
-  store: T;
+  store: StorageSpec<any, any>;
 };
 
 export declare class NetworkAdapter {
@@ -26,13 +26,11 @@ export declare class NetworkAdapter {
 
   public getMethodIdentifier(): string;
 
-  public createDid<T extends StorageSpec<Record<string, any>, any>>(
-    props: CreateDidProps<T>
-  ): Promise<DidCreationResult>;
+  public createDid(props: CreateDidProps): Promise<DidCreationResult>;
 
-  public deserializeDid<T extends StorageSpec<Record<string, any>, any>>(
+  public deserializeDid(
     conf: IdentityConfig,
-    store: T
+    store: StorageSpec<any, any>
   ): Promise<DidCreationResult>;
 }
 
