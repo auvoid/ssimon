@@ -3,13 +3,11 @@ import {
   IdentityManagerOptions,
   IdentityManagerSpec,
 } from "./identity-manager.types";
-import { IdentityAccount } from "./NetworkAdapter/IdentityAccount/index.types";
+import { IdentityAccount } from "./NetworkAdapter/IdentityAccount/index";
 import { CreateDidProps, NetworkAdapter } from "./NetworkAdapter/index.types";
 import { StorageSpec } from "./Storage/index.types";
 
-export class IdentityManager<T extends IdentityAccount>
-  implements IdentityManagerSpec<T>
-{
+export class IdentityManager implements IdentityManagerSpec {
   networkAdapters: Record<string, NetworkAdapter>;
   storage: StorageSpec<IdentityConfig, IdentityConfig>;
 
@@ -24,11 +22,13 @@ export class IdentityManager<T extends IdentityAccount>
   public static async build(
     options: IdentityManagerOptions<StorageSpec<any, any>>
   ) {
-    const { adapters, storage } = options;
+    const { adapters, storage, resolver } = options;
     const manager = new IdentityManager();
     manager.storage = storage;
     const initializedAdapters = await Promise.all(
-      adapters.map(async (a) => await a.build({ driver: manager.storage }))
+      adapters.map(
+        async (a) => await a.build({ driver: manager.storage, resolver })
+      )
     );
     const networkAdapters: Record<string, NetworkAdapter> = {};
     initializedAdapters.forEach(
