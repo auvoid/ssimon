@@ -1,66 +1,56 @@
-import { encryptWithAES, GenericStore, IdentityManager } from "../index";
+import { IdentityManager, StorageSpec } from "../index";
 import { DidJwkAdapter } from "../../../jwk-identity-adapter/src";
 import { getDidJwkResolver } from "@sphereon/did-resolver-jwk";
 import { Resolver } from "did-resolver";
+import {
+  constructFileStore,
+  createFolderIfNotExists,
+  testDirPath,
+} from "./test-utils/fs";
+import path from "path";
+import { ManagerSuite } from "./suites/manager";
+import { DIDSuite } from "./suites/did";
+import { CredentialsSuite } from "./suites/credentials";
 
-import { readFile, writeFile } from "fs/promises";
+let manager: IdentityManager;
+let managerStore: StorageSpec<any, any>;
+let idStore: StorageSpec<any, any>;
 
-const constructFileStore = ({
-  path,
-  password,
-}: {
-  path: string;
-  password: string;
-}) => {
-  /**
-   * FS writer
-   */
-  const writer = async (body: string) => {
-    await writeFile(path, body);
-  };
-
-  /**
-   * FS Reader
-   */
-  const reader = async () => {
-    const data = await readFile(path).catch(async (e) => {
-      if (e.code === "ENOENT") {
-        const encryptedEmptyArray = encryptWithAES("[]", password);
-        await writer(encryptedEmptyArray);
-        return encryptedEmptyArray;
-      }
-      throw new Error();
-    });
-
-    return data.toString();
-  };
-
-  /**
-   * Construct a new FS Store and return
-   */
-
-  const store = new GenericStore({ path, password, reader, writer });
-  return store;
+export type ManagerProps = {
+  manager: IdentityManager;
+  idStore: StorageSpec<any, any>;
+  managerStore: StorageSpec<any, any>;
 };
 
-async function run() {
-  const idStore = constructFileStore({ path: "./", password: "pass" });
-  const managerStore = constructFileStore({
-    path: "./manager",
-    password: "pass",
-  });
-  const resolver = new Resolver({ ...getDidJwkResolver() });
-  const manager = await IdentityManager.build({
-    adapters: [DidJwkAdapter],
-    resolver,
-    storage: managerStore,
-  });
-  const did = await manager.createDid({
-    alias: "doge",
-    store: idStore,
-    method: "jwk",
-  });
-  console.log(did);
+function getManagerParams(): ManagerProps {
+  return {
+    manager,
+    idStore,
+    managerStore,
+  };
 }
 
-run();
+async function initIdentityManager() {
+  createFolderIfNotExists();
+  managerStore = constructFileStore({
+    path: path.join(testDirPath, "./manager"),
+    password: "password",
+  });
+  idStore = constructFileStore({
+    path: path.join(testDirPath, "./id"),
+    password: "password",
+  });
+  manager = await IdentityManager.build({
+    storage: managerStore,
+    adapters: [DidJwkAdapter],
+    resolver: new Resolver({ ...getDidJwkResolver() }),
+  });
+}
+
+beforeAll(() => {
+  return initIdentityManager();
+});
+
+describe("IdentityManager Tests", ManagerSuite(getManagerParams));
+describe("DID Tests", DIDSuite(getManagerParams));
+describe("Credential Tests", CredentialsSuite(getManagerParams));

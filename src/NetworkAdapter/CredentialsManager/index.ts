@@ -64,9 +64,8 @@ export class CredentialsManager {
    * @returns Promise<IVerificationResult>
    */
 
-  public async verify(credential: Record<string, unknown>): Promise<boolean> {
-    const { cred } = credential;
-    const result = await verifyCredential(cred as string, this.resolver).catch(
+  public async verify(credential: string): Promise<boolean> {
+    const result = await verifyCredential(credential, this.resolver).catch(
       () => false
     );
     if (result === false) return false;
@@ -77,12 +76,10 @@ export class CredentialsManager {
    * Create and issue a new credential
    *
    * @param {CreateCredentialProps} options
-   * @returns {Promise<Record<string, any>>}
+   * @returns {Promise<string>}
    */
 
-  public async create(
-    options: CreateCredentialProps
-  ): Promise<Record<string, any>> {
+  public async create(options: CreateCredentialProps): Promise<string> {
     const { id, recipientDid, body, type } = options;
 
     const vcIssuer = {
@@ -110,19 +107,17 @@ export class CredentialsManager {
 
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
 
-    return { cred: jwt };
+    return jwt;
   }
 
   /**
    * Create and issue a new badge
    *
    * @param {CreateBadgeProps} options
-   * @returns {Promise<Record<string, any>>}
+   * @returns {Promise<string>}
    */
 
-  public async createBadge(
-    options: CreateBadgeProps
-  ): Promise<Record<string, any>> {
+  public async createBadge(options: CreateBadgeProps): Promise<string> {
     const {
       id,
       recipientDid,
@@ -140,7 +135,6 @@ export class CredentialsManager {
       alg: this.signer.alg,
       kid: this.signer.kid,
     };
-    const types = Array.isArray(type) ? [...type] : [type];
     const credential: JwtCredentialPayload = {
       sub: recipientDid,
       nbf: Math.floor(Date.now() / 1000),
@@ -183,9 +177,10 @@ export class CredentialsManager {
 
     const validator = new Validator();
     const result = validator.validate(credential.vc, OpenBadgeSchema);
+    console.log(result);
     if (result.errors.length > 0) throw new Error("Schema Validation Failed");
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
 
-    return { cred: jwt };
+    return jwt;
   }
 }

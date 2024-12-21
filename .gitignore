@@ -7,3 +7,4 @@ yarn-error.log
 iota-adapter
 *.testfile
 src/test.ts
+test-stores

@@ -3,13 +3,11 @@ import {
   IdentityManagerOptions,
   IdentityManagerSpec,
 } from "./identity-manager.types";
-import { IdentityAccount } from "./NetworkAdapter/IdentityAccount";
+import { IdentityAccount } from "./NetworkAdapter/IdentityAccount/index";
 import { CreateDidProps, NetworkAdapter } from "./NetworkAdapter/index.types";
 import { StorageSpec } from "./Storage/index.types";
 
-export class IdentityManager<T extends IdentityAccount>
-  implements IdentityManagerSpec<T>
-{
+export class IdentityManager implements IdentityManagerSpec {
   networkAdapters: Record<string, NetworkAdapter>;
   storage: StorageSpec<IdentityConfig, IdentityConfig>;
 
