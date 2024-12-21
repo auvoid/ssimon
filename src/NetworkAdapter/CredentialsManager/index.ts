@@ -8,13 +8,14 @@ import {
 import { DidSigner } from "../index.types";
 import { Validator } from "jsonschema";
 import { OpenBadgeSchema } from "./ob-schema";
+import { SDJwtVcInstance } from "@sd-jwt/sd-jwt-vc";
+import { digest, generateSalt } from "@sd-jwt/crypto-nodejs";
 
 export type CreateCredentialProps = {
   id: string;
   recipientDid: string;
   body: Record<string, unknown>;
   type: string | string[];
-  keyIndex: number;
   expiryDate?: number;
   extras?: Record<string, unknown>;
 };
@@ -34,6 +35,7 @@ export class CredentialsManager {
   store: StorageSpec<any, any>;
   signer: DidSigner;
   resolver: Resolver;
+  sdJwt: SDJwtVcInstance;
 
   private constructor() {}
 
@@ -54,6 +56,16 @@ export class CredentialsManager {
     credManager.store = store;
     credManager.signer = signer;
     credManager.resolver = resolver;
+    credManager.sdJwt = new SDJwtVcInstance({
+      signer: async (data: string) => {
+        const sign = (await signer.signer(data)) as string;
+        return sign;
+      },
+      signAlg: signer.alg,
+      hasher: digest,
+      hashAlg: "SHA-256",
+      saltGenerator: generateSalt,
+    });
     return credManager;
   }
 
@@ -106,6 +118,7 @@ export class CredentialsManager {
     if (options.expiryDate) credential.exp = options.expiryDate;
 
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
+    console.log(jwt);
 
     return jwt;
   }
@@ -177,7 +190,6 @@ export class CredentialsManager {
 
     const validator = new Validator();
     const result = validator.validate(credential.vc, OpenBadgeSchema);
-    console.log(result);
     if (result.errors.length > 0) throw new Error("Schema Validation Failed");
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
 

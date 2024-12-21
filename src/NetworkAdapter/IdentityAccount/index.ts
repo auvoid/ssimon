@@ -1,12 +1,10 @@
 import { StorageSpec } from "../../Storage/index.types";
 import { CredentialsManager } from "../CredentialsManager";
-import * as didJWT from "did-jwt";
 import { DidSigner } from "../index.types";
 import {
   createVerifiablePresentationJwt,
   JwtPresentationPayload,
 } from "did-jwt-vc";
-import { Resolver } from "did-resolver";
 
 export type IdentityAccountProps<
   T extends StorageSpec<Record<string, any>, any>,

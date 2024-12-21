@@ -17,7 +17,6 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
       });
       const vc = await did.credentials.create({
         recipientDid: "did:web:did.auvo.io",
-        keyIndex: 0,
         body: {
           test: "test",
         },
@@ -31,7 +30,6 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
     test("Create a Badge", async () => {
       const badge = await did.credentials.createBadge({
         recipientDid: "did:web:did.auvo.io",
-        keyIndex: 0,
         body: {
           test: "test",
         },
