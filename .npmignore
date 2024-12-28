@@ -13,3 +13,4 @@ CVS
 npm-debug.log
 src/tests
 *.stronghold
+.env

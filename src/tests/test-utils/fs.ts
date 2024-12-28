@@ -2,7 +2,7 @@ import { readFile, writeFile } from "fs/promises";
 import { GenericStore } from "../../Storage/GenericStore";
 import { encryptWithAES } from "../../utils/crypto";
 import path from "path";
-import { existsSync, mkdirSync } from "fs";
+import { existsSync, mkdirSync, rmSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -52,4 +52,11 @@ export const constructFileStore = ({
 
   const store = new GenericStore({ path, password, reader, writer });
   return store;
+};
+
+export const cleanUpTestStores = async () => {
+  if (existsSync(testDirPath)) {
+    // Delete the folder and its contents
+    rmSync(testDirPath, { recursive: true, force: true });
+  }
 };

@@ -118,7 +118,6 @@ export class CredentialsManager {
       // @ts-ignore
       frame
     );
-    console.log(credential);
     return credential;
   }
 
