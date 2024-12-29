@@ -16,9 +16,10 @@ export function ManagerSuite(getProps: () => ManagerProps) {
 
     test("Create a DID", async () => {
       const { idStore, seed } = getProps();
-      const did = await manager.getDid({
+      const did = await manager.createDid({
         alias: didOneAlias,
         store: idStore,
+        method: "jwk",
       });
       expect(did).toBeDefined();
       didTag = did.getDid();

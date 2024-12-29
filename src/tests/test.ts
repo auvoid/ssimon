@@ -1,11 +1,5 @@
 import { IdentityManager, StorageSpec } from "../index";
 import { DidJwkAdapter } from "@tanglelabs/jwk-identity-adapter";
-import { DidKeyAdapter } from "../../../key-identity-adapter/src/index";
-import { DidWebAdapter } from "../../../web-identity-adapter/src";
-import {
-  DidIotaAdapter,
-  IotaResolver,
-} from "../../../iota-identity-adapter/src";
 import { getDidJwkResolver } from "@sphereon/did-resolver-jwk";
 import { Resolver } from "did-resolver";
 import {
@@ -60,12 +54,11 @@ export async function initIdentityManager() {
   });
   manager = await IdentityManager.build({
     storage: managerStore,
-    adapters: [DidJwkAdapter, DidKeyAdapter, DidWebAdapter, DidIotaAdapter],
+    adapters: [DidJwkAdapter],
     resolver: new Resolver({
       ...KeyResolver.getResolver(),
       ...getDidJwkResolver(),
       ...WebResolver.getResolver(),
-      ...IotaResolver.getResolver(),
     }),
   });
   return { manager };
@@ -74,10 +67,10 @@ export async function initIdentityManager() {
 beforeEach(() => {
   return initIdentityManager();
 });
-// afterEach(() => {
-//   // return cleanUpTestStores();
-// });
-//
+afterEach(() => {
+  return cleanUpTestStores();
+});
+
 describe("IdentityManager Tests", ManagerSuite(getManagerParams));
 describe("DID Tests", DIDSuite(getManagerParams));
 describe("Credential Tests", CredentialsSuite(getManagerParams));

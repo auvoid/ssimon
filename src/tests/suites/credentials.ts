@@ -1,10 +1,6 @@
-import { Resolver } from "did-resolver";
 import { IdentityAccount } from "../../NetworkAdapter/IdentityAccount";
 import { ManagerProps } from "../test";
-import { generateRandomString } from "../test-utils/random";
 import * as didJWT from "did-jwt";
-import { getDidJwkResolver } from "@sphereon/did-resolver-jwk";
-import { getResolver } from "key-did-resolver";
 
 let did: IdentityAccount;
 let vcJwt: string;
@@ -15,8 +11,9 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
   return () => {
     test("Create VC", async () => {
       const { manager, idStore, seed } = getProps();
-      did = await manager.getDid({
+      did = await manager.createDid({
         alias: "staging.did.auvo.io",
+        method: "jwk",
         store: idStore,
       });
       const vc = await did.credentials.create({

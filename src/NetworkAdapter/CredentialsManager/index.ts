@@ -27,7 +27,7 @@ export type CreateSdJwtProps = {
   disclosureFrame: string[];
   recipientDid: string;
   type: string;
-  expiryDate?: number | Date;
+  expiryDate?: number;
 };
 
 export type CreateBadgeProps = CreateCredentialProps & {
