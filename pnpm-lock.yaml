@@ -20,12 +20,6 @@ importers:
       '@sphereon/did-resolver-jwk':
         specifier: 0.10.2-unstable.5
         version: 0.10.2-unstable.5
-      '@tanglelabs/jwk-identity-adapter':
-        specifier: ^0.2.0
-        version: 0.2.0(@tanglelabs/ssimon@0.5.3)
-      '@tanglelabs/typeorm-storage-driver':
-        specifier: ^0.1.3
-        version: 0.1.3(pg@8.13.1)(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
@@ -41,7 +35,16 @@ importers:
       jsonschema:
         specifier: ^1.4.1
         version: 1.4.1
+      key-did-resolver:
+        specifier: ^4.0.0
+        version: 4.0.0
     devDependencies:
+      '@tanglelabs/jwk-identity-adapter':
+        specifier: ^0.2.0
+        version: 0.2.3
+      '@tanglelabs/typeorm-storage-driver':
+        specifier: ^0.1.3
+        version: 0.1.3(pg@8.13.1)(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -60,6 +63,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.18.1
         version: 8.18.1(eslint@9.17.0)(typescript@5.7.2)
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
       eslint:
         specifier: ^9.17.0
         version: 9.17.0
@@ -93,6 +99,9 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
+      web-did-resolver:
+        specifier: ^2.0.27
+        version: 2.0.27
 
 packages:
 
@@ -646,13 +655,14 @@ packages:
   '@stablelib/wipe@1.0.1':
     resolution: {integrity: sha512-WfqfX/eXGiAd3RJe4VU2snh/ZPwtSjLG4ynQ/vYzvghTh7dHFcI1wl+nrkWG6lGhukOxOsUHfv8dUXr58D0ayg==}
 
-  '@tanglelabs/jwk-identity-adapter@0.2.0':
-    resolution: {integrity: sha512-0YM7h82IJ9p2I6MHb2jZevTSXh/ko5xnaNwekBcm0BVSF4nEAcsqywQo31AP6SABlp9kuoMar+u2bcuc102ZJg==}
-    peerDependencies:
-      '@tanglelabs/ssimon': 0.8.0
+  '@tanglelabs/jwk-identity-adapter@0.2.3':
+    resolution: {integrity: sha512-cybH6nwy1V2hy4as7/UNGHI5BGS8vh3rfnEmRDbD8f3oPITPR64jng9HDRU5bB9XiCjzABpLxyToY93LcyfTRg==}
 
   '@tanglelabs/ssimon@0.5.3':
     resolution: {integrity: sha512-qqiwe0lRyCHDDEphyt56R0RqJhmuALZBrvDGD82uXntRIdeaDcvmNMjj7j3+8Fi6OmPPXLMMTR0tDKfDqYNl6A==}
+
+  '@tanglelabs/ssimon@0.8.1':
+    resolution: {integrity: sha512-cn7Gj2emibqXVOKeSrAg8CqlwegH2CH0FuXKgAl9Eq30I/2G60GEPD3lZCMx+GDOmGyEepxLIAKFqlvf5WX6vw==}
 
   '@tanglelabs/typeorm-storage-driver@0.1.3':
     resolution: {integrity: sha512-9GY1nKJecefZKMU2mr1ndTeJWa1TqFoIqFrxDPjnn0DBFXPI9xMcfX0njEa/M7u0e4rd6IZLOph1dKQ3rug1hA==}
@@ -1149,6 +1159,9 @@ packages:
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+
+  cross-fetch@4.1.0:
+    resolution: {integrity: sha512-uKm5PU+MHTootlWEY+mZ4vvXoCn4fLQxT9dSc1sXVMSFkINTJVN8cAQROpwcKm8bJ/c7rgZVIBWzH5T78sNZZw==}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -1997,6 +2010,10 @@ packages:
     resolution: {integrity: sha512-IyEq64AdS6lUwtn3YSvGpu7KAGA2x5+fjRCUIa8+ccSLmWrODV/ICM5aa6hHV/19EPWef8/e322r9sQJJ6/3qA==}
     engines: {node: '>=14.14'}
 
+  key-did-resolver@4.0.0:
+    resolution: {integrity: sha512-+U2nd/0rjO4Yqe2hnHBD7ygcLRfT43Oje9IIjv1BlBi0lopwxZpIFQ7GekguOHK02r+JGdl8mpJVNHs5lvXVOA==}
+    engines: {node: '>=14.14'}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -2197,6 +2214,9 @@ packages:
     resolution: {integrity: sha512-eajQ/ZH7qXZQR2AgtfpmSMizQzmyYVmCql7pdhldPuYQi4atACekbJaQplk6dWyIi10jCaFnd6pqvcEFXjbaJw==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
 
+  multiformats@13.3.1:
+    resolution: {integrity: sha512-QxowxTNwJ3r5RMctoGA5p13w5RbRT2QDkoM+yFlqfLiioBp78nhDjnRLvmSBI9+KAqN4VdgOVWM9c0CHd86m3g==}
+
   multiformats@9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}
 
@@ -2218,6 +2238,15 @@ packages:
   node-emoji@2.2.0:
     resolution: {integrity: sha512-Z3lTE9pLaJF47NyMhd4ww1yFTAP8YhYI8SleJiHzM46Fgpm5cnNzSl9XfzFNqbaz+VlJrIj3fXQ4DeN1Rjm6cw==}
     engines: {node: '>=18'}
+
+  node-fetch@2.7.0:
+    resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
 
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
@@ -2876,6 +2905,9 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
+  tr46@0.0.3:
+    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+
   traverse@0.6.8:
     resolution: {integrity: sha512-aXJDbk6SnumuaZSANd21XAo15ucCDE38H4fkqiGsc3MhCK+wOlZvLP9cB/TvpHT0mOyWgC4Z8EwRlzqYSUzdsA==}
     engines: {node: '>= 0.4'}
@@ -3054,6 +3086,9 @@ packages:
   uint8arrays@4.0.10:
     resolution: {integrity: sha512-AnJNUGGDJAgFw/eWu/Xb9zrVKEGlwJJCaeInlf3BkecE/zcTobk5YXYIPNQJO1q5Hh1QZrQQHf0JvcHqz2hqoA==}
 
+  uint8arrays@5.1.0:
+    resolution: {integrity: sha512-vA6nFepEmlSKkMBnLBaUMVvAC4G3CTmO58C12y4sq6WPDOR7mOFYOi7GlrQ4djeSbP6JG9Pv9tJDM97PedRSww==}
+
   underscore@1.13.7:
     resolution: {integrity: sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g==}
 
@@ -3126,6 +3161,15 @@ packages:
 
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
+
+  web-did-resolver@2.0.27:
+    resolution: {integrity: sha512-YxQlNdeYBXLhVpMW62+TPlc6sSOiWyBYq7DNvY6FXmXOD9g0zLeShpq2uCKFFQV/WlSrBi/yebK/W5lMTDxMUQ==}
+
+  webidl-conversions@3.0.1:
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+
+  whatwg-url@5.0.0:
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -3944,10 +3988,10 @@ snapshots:
 
   '@stablelib/wipe@1.0.1': {}
 
-  '@tanglelabs/jwk-identity-adapter@0.2.0(@tanglelabs/ssimon@0.5.3)':
+  '@tanglelabs/jwk-identity-adapter@0.2.3':
     dependencies:
       '@sphereon/did-resolver-jwk': 0.10.2-unstable.5
-      '@tanglelabs/ssimon': 0.5.3
+      '@tanglelabs/ssimon': 0.8.1
       '@types/elliptic': 6.4.18
       base64url: 3.0.1
       did-jwt: 7.4.7
@@ -3967,6 +4011,20 @@ snapshots:
   '@tanglelabs/ssimon@0.5.3':
     dependencies:
       crypto-js: 4.2.0
+
+  '@tanglelabs/ssimon@0.8.1':
+    dependencies:
+      '@sd-jwt/crypto-nodejs': 0.9.1
+      '@sd-jwt/sd-jwt-vc': 0.9.1
+      '@sd-jwt/types': 0.9.1
+      '@sphereon/did-resolver-jwk': 0.10.2-unstable.5
+      crypto-js: 4.2.0
+      did-jwt: 8.0.4
+      did-jwt-vc: 4.0.4
+      did-resolver: 4.1.0
+      jsonschema: 1.4.1
+    transitivePeerDependencies:
+      - supports-color
 
   '@tanglelabs/typeorm-storage-driver@0.1.3(pg@8.13.1)(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))':
     dependencies:
@@ -4524,6 +4582,12 @@ snapshots:
       - ts-node
 
   create-require@1.1.1: {}
+
+  cross-fetch@4.1.0:
+    dependencies:
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
 
   cross-spawn@7.0.6:
     dependencies:
@@ -5591,6 +5655,13 @@ snapshots:
       uint8arrays: 4.0.10
       varint: 6.0.0
 
+  key-did-resolver@4.0.0:
+    dependencies:
+      '@noble/curves': 1.7.0
+      multiformats: 13.3.1
+      uint8arrays: 5.1.0
+      varint: 6.0.0
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -5758,6 +5829,8 @@ snapshots:
 
   multiformats@12.1.3: {}
 
+  multiformats@13.3.1: {}
+
   multiformats@9.9.0: {}
 
   mz@2.7.0:
@@ -5783,6 +5856,10 @@ snapshots:
       char-regex: 1.0.2
       emojilib: 2.4.0
       skin-tone: 2.0.0
+
+  node-fetch@2.7.0:
+    dependencies:
+      whatwg-url: 5.0.0
 
   node-int64@0.4.0: {}
 
@@ -6334,6 +6411,8 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
+  tr46@0.0.3: {}
+
   traverse@0.6.8: {}
 
   ts-api-utils@1.4.3(typescript@5.7.2):
@@ -6465,6 +6544,10 @@ snapshots:
     dependencies:
       multiformats: 12.1.3
 
+  uint8arrays@5.1.0:
+    dependencies:
+      multiformats: 13.3.1
+
   underscore@1.13.7: {}
 
   undici-types@6.20.0: {}
@@ -6521,6 +6604,20 @@ snapshots:
   walker@1.0.8:
     dependencies:
       makeerror: 1.0.12
+
+  web-did-resolver@2.0.27:
+    dependencies:
+      cross-fetch: 4.1.0
+      did-resolver: 4.1.0
+    transitivePeerDependencies:
+      - encoding
+
+  webidl-conversions@3.0.1: {}
+
+  whatwg-url@5.0.0:
+    dependencies:
+      tr46: 0.0.3
+      webidl-conversions: 3.0.1
 
   which@2.0.2:
     dependencies:

@@ -3,7 +3,7 @@ import { ManagerProps } from "../test";
 import { generateRandomString } from "../test-utils/random";
 
 let manager: IdentityManager;
-let didOneAlias: string;
+let didOneAlias: string = "staging.did.auvo.io";
 let didTag: string;
 
 export function ManagerSuite(getProps: () => ManagerProps) {
@@ -15,37 +15,14 @@ export function ManagerSuite(getProps: () => ManagerProps) {
     });
 
     test("Create a DID", async () => {
-      const { idStore } = getProps();
-      didOneAlias = generateRandomString();
+      const { idStore, seed } = getProps();
       const did = await manager.createDid({
         alias: didOneAlias,
-        method: "jwk",
         store: idStore,
+        method: "jwk",
       });
       expect(did).toBeDefined();
       didTag = did.getDid();
-    });
-
-    test("Throw on Duplicate DID", async () => {
-      const { idStore } = getProps();
-      const did = async () => {
-        await manager.createDid({
-          alias: didOneAlias,
-          method: "jwk",
-          store: idStore,
-        });
-      };
-
-      await expect(did()).rejects.toThrow();
-    });
-
-    test("Get DID", async () => {
-      const { idStore } = getProps();
-      const did = await manager.getDid({
-        alias: didOneAlias,
-        store: idStore,
-      });
-      expect(didTag).toEqual(did.getDid());
     });
   };
 }

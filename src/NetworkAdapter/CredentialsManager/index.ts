@@ -10,7 +10,7 @@ import type { DisclosureFrame } from "@sd-jwt/types";
 import { DidSigner } from "../index.types";
 import { Validator } from "jsonschema";
 import { OpenBadgeSchema } from "./ob-schema";
-import { SDJwtVcInstance } from "@sd-jwt/sd-jwt-vc";
+import { SDJwtVcInstance, SdJwtVcPayload } from "@sd-jwt/sd-jwt-vc";
 import { digest, generateSalt } from "@sd-jwt/crypto-nodejs";
 
 export type CreateCredentialProps = {
@@ -27,6 +27,7 @@ export type CreateSdJwtProps = {
   disclosureFrame: string[];
   recipientDid: string;
   type: string;
+  expiryDate?: number;
 };
 
 export type CreateBadgeProps = CreateCredentialProps & {
@@ -102,23 +103,26 @@ export class CredentialsManager {
    * @returns {Promise<string>}
    */
   async createSdJwt(props: CreateSdJwtProps): Promise<string> {
-    const { body, disclosureFrame, type, recipientDid } = props;
+    const { body, disclosureFrame, type, recipientDid, expiryDate } = props;
     const frame = {
       _sd: disclosureFrame,
     };
+    const vcPayload: SdJwtVcPayload = {
+      iss: this.signer.did,
+      sub: recipientDid,
+      iat: Math.floor(Date.now() / 1000),
+      vct: type,
+      ...body,
+    };
+
+    if (expiryDate) vcPayload.exp = expiryDate;
+
     const credential = await this.sdJwt.issue(
-      {
-        iss: this.signer.did,
-        sub: recipientDid,
-        iat: Math.floor(Date.now() / 1000),
-        vct: type,
-        ...body,
-      },
+      vcPayload,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       frame
     );
-    console.log(credential);
     return credential;
   }
 

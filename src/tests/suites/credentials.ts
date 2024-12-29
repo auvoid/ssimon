@@ -1,9 +1,6 @@
-import { Resolver } from "did-resolver";
 import { IdentityAccount } from "../../NetworkAdapter/IdentityAccount";
 import { ManagerProps } from "../test";
-import { generateRandomString } from "../test-utils/random";
 import * as didJWT from "did-jwt";
-import { getDidJwkResolver } from "@sphereon/did-resolver-jwk";
 
 let did: IdentityAccount;
 let vcJwt: string;
@@ -13,9 +10,9 @@ let badgeJwt: string;
 export function CredentialsSuite(getProps: () => ManagerProps) {
   return () => {
     test("Create VC", async () => {
-      const { manager, idStore } = getProps();
+      const { manager, idStore, seed } = getProps();
       did = await manager.createDid({
-        alias: generateRandomString(),
+        alias: "staging.did.auvo.io",
         method: "jwk",
         store: idStore,
       });
@@ -65,7 +62,7 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
 
     test("Verify SD-JWT", async () => {
       const result = await didJWT.verifyJWT(sdJwt.split("~")[0], {
-        resolver: new Resolver({ ...getDidJwkResolver() }),
+        resolver: did.credentials.resolver,
       });
       expect(result.verified).toEqual(true);
     });

@@ -8,6 +8,9 @@ const config: JestConfigWithTsJest = {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
   maxWorkers: 1,
+  transformIgnorePatterns: [
+    "/node_modules/(?!@iota/identity-wasm)", // Tell Jest to transform this specific dependency
+  ],
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
     // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`

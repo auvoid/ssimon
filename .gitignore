@@ -8,3 +8,4 @@ iota-adapter
 *.testfile
 src/test.ts
 test-stores
+.env
