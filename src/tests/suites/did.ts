@@ -12,11 +12,9 @@ export function DIDSuite(getProps: () => ManagerProps) {
   return () => {
     test("Get DID Tag", async () => {
       const { manager, idStore, seed } = getProps();
-      did = await manager.createDid({
+      did = await manager.getDid({
         alias: "staging.did.auvo.io",
         store: idStore,
-        seed,
-        method: "web",
       });
       expect(did.getDid()).toBeDefined();
     });

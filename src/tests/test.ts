@@ -48,7 +48,7 @@ function getManagerParams(): ManagerProps {
   };
 }
 
-async function initIdentityManager() {
+export async function initIdentityManager() {
   createFolderIfNotExists();
   managerStore = constructFileStore({
     path: path.join(testDirPath, "./manager"),
@@ -60,7 +60,7 @@ async function initIdentityManager() {
   });
   manager = await IdentityManager.build({
     storage: managerStore,
-    adapters: [DidJwkAdapter, DidKeyAdapter, DidWebAdapter],
+    adapters: [DidJwkAdapter, DidKeyAdapter, DidWebAdapter, DidIotaAdapter],
     resolver: new Resolver({
       ...KeyResolver.getResolver(),
       ...getDidJwkResolver(),
@@ -68,15 +68,16 @@ async function initIdentityManager() {
       ...IotaResolver.getResolver(),
     }),
   });
+  return { manager };
 }
 
 beforeEach(() => {
   return initIdentityManager();
 });
-afterEach(() => {
-  return cleanUpTestStores();
-});
-
+// afterEach(() => {
+//   // return cleanUpTestStores();
+// });
+//
 describe("IdentityManager Tests", ManagerSuite(getManagerParams));
 describe("DID Tests", DIDSuite(getManagerParams));
 describe("Credential Tests", CredentialsSuite(getManagerParams));

@@ -15,11 +15,9 @@ export function CredentialsSuite(getProps: () => ManagerProps) {
   return () => {
     test("Create VC", async () => {
       const { manager, idStore, seed } = getProps();
-      did = await manager.createDid({
+      did = await manager.getDid({
         alias: "staging.did.auvo.io",
         store: idStore,
-        method: "web",
-        seed,
       });
       const vc = await did.credentials.create({
         recipientDid: "did:web:did.auvo.io",
