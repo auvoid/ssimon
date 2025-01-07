@@ -4,8 +4,8 @@ import {
   IdentityManagerSpec,
 } from "./identity-manager.types";
 import { IdentityAccount } from "./NetworkAdapter/IdentityAccount/index";
-import { CreateDidProps, NetworkAdapter } from "./NetworkAdapter/index.types";
-import { StorageSpec } from "./Storage/index.types";
+import { CreateDidProps, NetworkAdapter } from "./NetworkAdapter";
+import { StorageSpec } from "./Storage";
 
 export class IdentityManager implements IdentityManagerSpec {
   networkAdapters: Record<string, NetworkAdapter>;
@@ -32,7 +32,7 @@ export class IdentityManager implements IdentityManagerSpec {
     );
     const networkAdapters: Record<string, NetworkAdapter> = {};
     initializedAdapters.forEach(
-      (a) => (networkAdapters[a.getMethodIdentifier()] = a)
+      (a: NetworkAdapter) => (networkAdapters[a.getMethodIdentifier()] = a)
     );
     manager.networkAdapters = networkAdapters;
     return manager;

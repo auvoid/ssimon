@@ -1,6 +1,6 @@
 import { IdentityConfig } from "../identity-manager.types";
 import { IdentityAccount } from "./IdentityAccount";
-import { StorageSpec } from "../Storage/index.types";
+import { StorageSpec } from "../Storage";
 import * as didJWT from "did-jwt";
 import { Resolver } from "did-resolver";
 

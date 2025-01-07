@@ -1,13 +1,11 @@
-import { StorageSpec } from "../../Storage/index.types";
+import { StorageSpec } from "../../Storage";
 import { Resolver } from "did-resolver";
 import {
   createVerifiableCredentialJwt,
   JwtCredentialPayload,
   verifyCredential,
 } from "did-jwt-vc";
-import type { DisclosureFrame } from "@sd-jwt/types";
-
-import { DidSigner } from "../index.types";
+import { DidSigner } from "..";
 import { Validator } from "jsonschema";
 import { OpenBadgeSchema } from "./ob-schema";
 import { SDJwtVcInstance, SdJwtVcPayload } from "@sd-jwt/sd-jwt-vc";

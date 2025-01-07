@@ -69,6 +69,9 @@ importers:
       eslint:
         specifier: ^9.17.0
         version: 9.17.0
+      fix-esm-import-path:
+        specifier: ^1.10.1
+        version: 1.10.1
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.10.2)(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))

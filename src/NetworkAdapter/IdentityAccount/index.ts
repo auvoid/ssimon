@@ -1,6 +1,6 @@
-import { StorageSpec } from "../../Storage/index.types";
+import { StorageSpec } from "../../Storage";
 import { CredentialsManager } from "../CredentialsManager";
-import { DidSigner } from "../index.types";
+import { DidSigner } from "..";
 import {
   createVerifiablePresentationJwt,
   JwtPresentationPayload,
