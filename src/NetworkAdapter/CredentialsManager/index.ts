@@ -1,10 +1,5 @@
 import { StorageSpec } from "../../Storage";
-import { Resolver } from "did-resolver";
-import {
-  createVerifiableCredentialJwt,
-  JwtCredentialPayload,
-  verifyCredential,
-} from "did-jwt-vc";
+
 import { DidSigner } from "..";
 import { Validator } from "jsonschema";
 import { OpenBadgeSchema } from "./ob-schema";
@@ -42,7 +37,7 @@ export type CreateBadgeProps = CreateCredentialProps & {
 export class CredentialsManager {
   store: StorageSpec<any, any>;
   signer: DidSigner;
-  resolver: Resolver;
+  resolver: any;
   sdJwt: SDJwtVcInstance;
 
   private constructor() {}
@@ -58,7 +53,7 @@ export class CredentialsManager {
   public static build(
     store: StorageSpec<any, any>,
     signer: DidSigner,
-    resolver: Resolver
+    resolver: any
   ): CredentialsManager {
     const credManager = new CredentialsManager();
     credManager.store = store;
@@ -85,6 +80,7 @@ export class CredentialsManager {
    */
 
   public async verify(credential: string): Promise<boolean> {
+    const { verifyCredential } = await import("did-jwt-vc");
     const result = await verifyCredential(credential, this.resolver).catch(
       (e) => {
         return false;
@@ -142,7 +138,7 @@ export class CredentialsManager {
     };
     const types = Array.isArray(type) ? [...type] : [type];
 
-    const credential: JwtCredentialPayload = {
+    const credential = {
       sub: recipientDid,
       nbf: Math.floor(Date.now() / 1000),
       id,
@@ -154,8 +150,10 @@ export class CredentialsManager {
           ...body,
         },
       },
+      exp: options.expiryDate,
     };
-    if (options.expiryDate) credential.exp = options.expiryDate;
+    if (!credential.exp) delete credential.exp;
+    const { createVerifiableCredentialJwt } = await import("did-jwt-vc");
 
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
 
@@ -187,10 +185,11 @@ export class CredentialsManager {
       alg: this.signer.alg,
       kid: this.signer.kid,
     };
-    const credential: JwtCredentialPayload = {
+    const credential = {
       sub: recipientDid,
       nbf: Math.floor(Date.now() / 1000),
       id,
+      exp: options.expiryDate,
       vc: {
         "@context": [
           "https://www.w3.org/2018/credentials/v1",
@@ -225,11 +224,12 @@ export class CredentialsManager {
       },
     };
 
-    if (options.expiryDate) credential.exp = options.expiryDate;
+    if (!credential.exp) delete credential.exp;
 
     const validator = new Validator();
     const result = validator.validate(credential.vc, OpenBadgeSchema);
     if (result.errors.length > 0) throw new Error("Schema Validation Failed");
+    const { createVerifiableCredentialJwt } = await import("did-jwt-vc");
     const jwt = await createVerifiableCredentialJwt(credential, vcIssuer);
 
     return jwt;

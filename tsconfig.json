@@ -1,16 +1,24 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ESNext",
+    "module": "NodeNext",
+    "declaration": true,
+    "moduleResolution": "nodenext",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
+    "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "noImplicitAny": true,
-    "declaration": true,
+    "baseUrl": "./",
+    "incremental": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "strictPropertyInitialization": false
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "src/tests"]

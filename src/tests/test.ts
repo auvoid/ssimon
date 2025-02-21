@@ -1,24 +1,15 @@
 import { IdentityManager, StorageSpec } from "../index";
-import { DidJwkAdapter } from "@tanglelabs/jwk-identity-adapter";
-import { getDidJwkResolver } from "@sphereon/did-resolver-jwk";
-import { Resolver } from "did-resolver";
 import {
   constructFileStore,
   createFolderIfNotExists,
   cleanUpTestStores,
   testDirPath,
 } from "./test-utils/fs";
-import path, { dirname } from "path";
+import * as path from "path";
 import { ManagerSuite } from "./suites/manager";
 import { DIDSuite } from "./suites/did";
 import { CredentialsSuite } from "./suites/credentials";
-import * as KeyResolver from "key-did-resolver";
-import * as WebResolver from "web-did-resolver";
-import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import * as dotenv from "dotenv";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -43,11 +34,14 @@ function getManagerParams(): ManagerProps {
 }
 
 export async function initIdentityManager() {
+  const { Resolver } = await import("did-resolver");
+  const { getDidJwkResolver } = await import("@sphereon/did-resolver-jwk");
   createFolderIfNotExists();
   managerStore = constructFileStore({
     path: path.join(testDirPath, "./manager"),
     password: "password",
   });
+  const { DidJwkAdapter } = await import("@tanglelabs/jwk-identity-adapter");
   idStore = constructFileStore({
     path: path.join(testDirPath, "./id"),
     password: "password",
@@ -56,9 +50,7 @@ export async function initIdentityManager() {
     storage: managerStore,
     adapters: [DidJwkAdapter],
     resolver: new Resolver({
-      ...KeyResolver.getResolver(),
       ...getDidJwkResolver(),
-      ...WebResolver.getResolver(),
     }),
   });
   return { manager };

@@ -1,11 +1,6 @@
 import { StorageSpec } from "../../Storage";
 import { CredentialsManager } from "../CredentialsManager";
 import { DidSigner } from "..";
-import {
-  createVerifiablePresentationJwt,
-  JwtPresentationPayload,
-} from "did-jwt-vc";
-
 export type IdentityAccountProps<
   T extends StorageSpec<Record<string, any>, any>,
 > = {
@@ -56,8 +51,9 @@ export class IdentityAccount {
       alg: this.signer.alg,
       kid: this.signer.kid,
     };
+    const { createVerifiablePresentationJwt } = await import("did-jwt-vc");
 
-    const vpPayload: JwtPresentationPayload = {
+    const vpPayload = {
       vp: {
         "@context": ["https://www.w3.org/2018/credentials/v1"],
         type: ["VerifiablePresentation"],

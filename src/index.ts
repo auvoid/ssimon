@@ -1,4 +1,4 @@
-export * from "./NetworkAdapter";
+export * from "./NetworkAdapter/index.d";
 export * from "./NetworkAdapter/CredentialsManager";
 export * from "./NetworkAdapter/IdentityAccount";
 export * from "./Storage";
@@ -7,4 +7,4 @@ export * from "./Storage/GenericStore/index.types";
 export * from "./utils/codec";
 export * from "./utils/crypto";
 export * from "./identity-manager";
-export * from "./identity-manager.types";
+export * from "./identity-manager.d";
