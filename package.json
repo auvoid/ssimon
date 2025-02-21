@@ -1,6 +1,6 @@
 {
   "name": "@tanglelabs/ssimon",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "SSIMON is an open, interoperable, and convenient software to manage DIDs and credentials",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
