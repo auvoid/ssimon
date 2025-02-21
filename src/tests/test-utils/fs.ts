@@ -1,13 +1,9 @@
 import { readFile, writeFile } from "fs/promises";
 import { GenericStore } from "../../Storage/GenericStore";
 import { encryptWithAES } from "../../utils/crypto";
-import path from "path";
+import * as path from "path";
 import { existsSync, mkdirSync, rmSync } from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 export const testDirPath = path.join(__dirname, "../../../test-stores");
 
 export const createFolderIfNotExists = () => {
