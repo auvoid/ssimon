@@ -2,7 +2,7 @@ import {
   IdentityConfig,
   IdentityManagerOptions,
   IdentityManagerSpec,
-} from "./identity-manager.types";
+} from "./identity-manager.d";
 import { IdentityAccount } from "./NetworkAdapter/IdentityAccount/index";
 import { CreateDidProps, NetworkAdapter } from "./NetworkAdapter";
 import { StorageSpec } from "./Storage";

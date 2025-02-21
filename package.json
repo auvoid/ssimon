@@ -2,8 +2,8 @@
   "name": "@tanglelabs/ssimon",
   "version": "0.9.0",
   "description": "SSIMON is an open, interoperable, and convenient software to manage DIDs and credentials",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "repository": "https://github.com/Tangle-Labs/identity-manager",
   "author": "Merul <merul@tanglelabs.io>",
   "license": "GPL-2.0",
@@ -21,14 +21,14 @@
     "key-did-resolver": "^4.0.0"
   },
   "scripts": {
-    "build": "tsc && fix-esm-import-path ./dist",
+    "build": "tsc --project tsconfig.json && npm run copy-dts",
+    "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "format": "prettier -w \"**/*.{ts,js,json,scss,css}\"",
     "format-check": "prettier -c \"src/**{ts,js,json,scss,css}\"",
     "semantic-release": "semantic-release --branches main",
-    "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
     "dev": "nodemon --watch './**/*.ts' --exec 'node --experimental-specifier-resolution=node --trace-warnings --loader ts-node/esm' src/tests/manual-test.ts"
   },
   "devDependencies": {
@@ -42,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
     "@vitest/coverage-v8": "^3.0.6",
+    "copyfiles": "^2.4.1",
     "dotenv": "^16.4.7",
     "eslint": "^9.17.0",
     "fix-esm-import-path": "^1.10.1",

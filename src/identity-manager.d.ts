@@ -1,7 +1,8 @@
-import { Resolver } from "did-resolver";
 import { IdentityAccount } from "./NetworkAdapter/IdentityAccount/index";
 import { NetworkAdapter } from "./NetworkAdapter";
 import { StorageSpec } from "./Storage";
+import type { Resolver } from "did-resolver";
+import type { Signer } from "did-jwt";
 
 export type IdentityConfig = {
   alias: string;

@@ -1,8 +1,8 @@
-import { IdentityConfig } from "../identity-manager.types";
+import { IdentityConfig } from "../identity-manager";
 import { IdentityAccount } from "./IdentityAccount";
 import { StorageSpec } from "../Storage";
-import * as didJWT from "did-jwt";
-import { Resolver } from "did-resolver";
+import type { Resolver } from "did-resolver";
+import type { Signer } from "did-jwt";
 
 export type DidCreationResult = {
   identity: IdentityAccount;
@@ -38,5 +38,5 @@ export type DidSigner = {
   did: `did:${string}`;
   kid: `did:${string}`;
   alg: string;
-  signer: didJWT.Signer;
+  signer: Signer;
 };
