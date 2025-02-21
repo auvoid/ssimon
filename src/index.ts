@@ -1,4 +1,4 @@
-export * from "./NetworkAdapter";
+export * from "./NetworkAdapter/index.d";
 export * from "./NetworkAdapter/CredentialsManager";
 export * from "./NetworkAdapter/IdentityAccount";
 export * from "./Storage";
