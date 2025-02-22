@@ -1,6 +1,6 @@
 import { StorageSpec } from "../../Storage";
 import { CredentialsManager } from "../CredentialsManager";
-import { DidSigner } from "..";
+import { DidSigner } from "../index.types";
 export type IdentityAccountProps<
   T extends StorageSpec<Record<string, any>, any>,
 > = {

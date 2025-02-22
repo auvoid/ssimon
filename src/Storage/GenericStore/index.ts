@@ -1,5 +1,5 @@
 import { StorageSpec } from "..";
-import { IdentityConfig } from "../../identity-manager.types.d";
+import { IdentityConfig } from "../../identity-manager.types";
 import { IGenericStoreProps } from "./index.types";
 import { decryptWithAES, encryptWithAES } from "../../utils/crypto";
 

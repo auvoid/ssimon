@@ -1,7 +1,7 @@
 import { StorageSpec } from "../../Storage";
 
-import { DidSigner } from "..";
 import { Validator } from "jsonschema";
+import { DidSigner } from "../index.types";
 import { OpenBadgeSchema } from "./ob-schema";
 import { SDJwtVcInstance, SdJwtVcPayload } from "@sd-jwt/sd-jwt-vc";
 import { digest, generateSalt } from "@sd-jwt/crypto-nodejs";

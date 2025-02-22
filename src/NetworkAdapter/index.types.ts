@@ -1,8 +1,8 @@
-import { IdentityConfig } from "../identity-manager";
+import { IdentityConfig } from "../identity-manager.types";
 import { IdentityAccount } from "./IdentityAccount";
 import { StorageSpec } from "../Storage";
-import type { Resolver } from "did-resolver";
-import type { Signer } from "did-jwt";
+import type { Resolver } from "did-resolver" with { "resolution-mode": "import" };
+import type { Signer } from "did-jwt" with { "resolution-mode": "import" };
 
 export type DidCreationResult = {
   identity: IdentityAccount;
