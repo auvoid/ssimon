@@ -40,8 +40,8 @@ importers:
         version: 4.0.0
     devDependencies:
       '@tanglelabs/jwk-identity-adapter':
-        specifier: ^0.2.0
-        version: 0.2.4
+        specifier: ^1.0.0
+        version: 1.0.0
       '@tanglelabs/typeorm-storage-driver':
         specifier: ^0.1.3
         version: 0.1.3(pg@8.13.3)(ts-node@10.9.2(@types/node@22.13.5)(typescript@5.7.3))
@@ -916,14 +916,14 @@ packages:
   '@stablelib/wipe@1.0.1':
     resolution: {integrity: sha512-WfqfX/eXGiAd3RJe4VU2snh/ZPwtSjLG4ynQ/vYzvghTh7dHFcI1wl+nrkWG6lGhukOxOsUHfv8dUXr58D0ayg==}
 
-  '@tanglelabs/jwk-identity-adapter@0.2.4':
-    resolution: {integrity: sha512-eClUqAVMEKYUFd/c5S/0q5C1zY2szXRwicT7GlwNQXEgxjK4J2ONTt0PUQo4qb3LfABlaVrEZXLzkIRkHlly+Q==}
+  '@tanglelabs/jwk-identity-adapter@1.0.0':
+    resolution: {integrity: sha512-2XB3OPq30BKdAhLcBrXIA3INZyCq9g9GvJgWW0nRZeYBcwENMh7YZOmM5cmNUrLapFisnDiyQDWSSwL3CMQUWw==}
 
   '@tanglelabs/ssimon@0.5.3':
     resolution: {integrity: sha512-qqiwe0lRyCHDDEphyt56R0RqJhmuALZBrvDGD82uXntRIdeaDcvmNMjj7j3+8Fi6OmPPXLMMTR0tDKfDqYNl6A==}
 
-  '@tanglelabs/ssimon@0.8.4':
-    resolution: {integrity: sha512-xGjMO5Q29T9uW6KA3qk5PdfVPY9cpK7xkq1QdTYST7clECTbtupcwpZCFe8nkzEnmfxZcC8YWlpiCbKUsu1chw==}
+  '@tanglelabs/ssimon@1.0.0':
+    resolution: {integrity: sha512-E4WJNiD8eaqmDMLC3WIw2dBlqDPDElGyFa1HL9S3D9lgwxpvyXs4fk1+rSwvXQ68Ml+Z9ib04EoacKXidTvkRQ==}
 
   '@tanglelabs/typeorm-storage-driver@0.1.3':
     resolution: {integrity: sha512-9GY1nKJecefZKMU2mr1ndTeJWa1TqFoIqFrxDPjnn0DBFXPI9xMcfX0njEa/M7u0e4rd6IZLOph1dKQ3rug1hA==}
@@ -4632,10 +4632,10 @@ snapshots:
 
   '@stablelib/wipe@1.0.1': {}
 
-  '@tanglelabs/jwk-identity-adapter@0.2.4':
+  '@tanglelabs/jwk-identity-adapter@1.0.0':
     dependencies:
       '@sphereon/did-resolver-jwk': 0.10.2-unstable.5
-      '@tanglelabs/ssimon': 0.8.4
+      '@tanglelabs/ssimon': 1.0.0
       '@types/elliptic': 6.4.18
       base64url: 3.0.1
       did-jwt: 7.4.7
@@ -4656,7 +4656,7 @@ snapshots:
     dependencies:
       crypto-js: 4.2.0
 
-  '@tanglelabs/ssimon@0.8.4':
+  '@tanglelabs/ssimon@1.0.0':
     dependencies:
       '@sd-jwt/crypto-nodejs': 0.9.2
       '@sd-jwt/sd-jwt-vc': 0.9.2
