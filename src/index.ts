@@ -1,6 +1,7 @@
 export * from "./";
 export * from "./NetworkAdapter/CredentialsManager";
 export * from "./NetworkAdapter/IdentityAccount";
+export * from "./NetworkAdapter/index.types";
 export * from "./Storage";
 export * from "./Storage/GenericStore/index";
 export * from "./Storage/GenericStore/index.types";
