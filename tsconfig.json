@@ -17,7 +17,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "emitDeclarationOnly": false, 
+    "emitDeclarationOnly": false,
     "declarationMap": true
   },
   "include": ["src/**/*"],
