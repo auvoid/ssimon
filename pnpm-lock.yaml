@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sd-jwt/crypto-nodejs':
-        specifier: ^0.9.1
-        version: 0.9.2
+        specifier: ^0.15.0
+        version: 0.15.0
       '@sd-jwt/sd-jwt-vc':
         specifier: ^0.9.1
         version: 0.9.2
@@ -804,6 +804,10 @@ packages:
 
   '@sd-jwt/core@0.9.2':
     resolution: {integrity: sha512-AbvID/VIogRtPtCWGmfUlCZczHaBSRFmTwOAiUeuPRjDJTGUQu3gMRKwsfSGRHlfPo0pSaRQ7lqN3N+a5i+SDA==}
+    engines: {node: '>=18'}
+
+  '@sd-jwt/crypto-nodejs@0.15.0':
+    resolution: {integrity: sha512-qWoXeJL/knLUDYJ5s3elOwT5iakGz3gGpjdM3F9Xghq0lx6MdOUEBdLoJuGzhkyxCVg2eBNewLqsaeg7h2Ik/Q==}
     engines: {node: '>=18'}
 
   '@sd-jwt/crypto-nodejs@0.9.2':
@@ -4465,6 +4469,8 @@ snapshots:
       '@sd-jwt/present': 0.9.2
       '@sd-jwt/types': 0.9.2
       '@sd-jwt/utils': 0.9.2
+
+  '@sd-jwt/crypto-nodejs@0.15.0': {}
 
   '@sd-jwt/crypto-nodejs@0.9.2': {}
 

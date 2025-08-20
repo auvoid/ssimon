@@ -9,7 +9,7 @@
   "license": "GPL-2.0",
   "type": "commonjs",
   "dependencies": {
-    "@sd-jwt/crypto-nodejs": "^0.9.1",
+    "@sd-jwt/crypto-nodejs": "^0.15.0",
     "@sd-jwt/sd-jwt-vc": "^0.9.1",
     "@sd-jwt/types": "^0.9.1",
     "@sphereon/did-resolver-jwk": "0.10.2-unstable.5",
